@@ -27,3 +27,11 @@ class S {
 
   const S._();
 }
+
+class StaticS{
+  static late AppLocalizations _loc;
+
+  static AppLocalizations get loc => StaticS._loc;
+
+  static void init(BuildContext context) => _loc = S.of(context);
+}

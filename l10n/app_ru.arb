@@ -1,3 +1,10 @@
 {
-    "triathlon": "Триатлон"
+    "triathlon": "Триатлон",
+    "swimming": "Плавание",
+    "cycling": "Плавание",
+    "running": "Бег",
+    "sprint": "Спринт",
+    "olympic": "Олимпийский",
+    "o2": "O2",
+    "half_ironman": "полу-железочел"
 }

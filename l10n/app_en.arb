@@ -1,3 +1,10 @@
 {
-    "triathlon": "Triathlon"
+    "triathlon": "Triathlon",
+    "swimming": "Swimming",
+    "cycling": "Cycling",
+    "running": "Running",
+    "sprint": "Sprint",
+    "olympic": "Olympic",
+    "o2": "O2",
+    "half_ironman": "half ironman"
 }

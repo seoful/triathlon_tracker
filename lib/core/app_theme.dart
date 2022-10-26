@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:triathlon_tracker/style.dart';
+import 'package:triathlon_tracker/core/style.dart';
 
 class AppTheme {
   static const _defaultFontFamily = 'Roboto';

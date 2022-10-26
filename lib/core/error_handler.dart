@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
-import 'package:triathlon_tracker/logger.dart';
+import 'package:triathlon_tracker/core/logger.dart';
 
 class ErrorHandler {
   static void init() {
