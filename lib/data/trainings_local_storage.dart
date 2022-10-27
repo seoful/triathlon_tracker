@@ -20,6 +20,10 @@ class TrainingsLocalStorage {
     trainings.add(training);
     box.put(trainingType, trainings);
   }
+
+  List<Training> getTrainings(TrainingType trainingType) {
+    return box.get(trainingType)!;
+  }
 }
 
 final trainingsLocalStorageProvider = Provider<TrainingsLocalStorage>((ref) {
