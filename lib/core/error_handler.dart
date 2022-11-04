@@ -11,7 +11,7 @@ class ErrorHandler {
   }
 
   static void recordError(Object error, StackTrace stackTrace) {
-    print(error);
+    logger.severe(error);
     logger.severe(
       error.toString(),
       error,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'home_screen.dart';
-import 'statistics_screen.dart';
+import 'package:triathlon_tracker/presentation/home_screen.dart';
+import 'package:triathlon_tracker/presentation/statistics_screen.dart';
 
 BuildContext? globalContext;
 
@@ -130,12 +130,14 @@ class TabNavigator extends StatelessWidget {
     var routeBuilders = _routeBuilders(context);
 
     return Navigator(
-        key: navigatorKey,
-        initialRoute: '/',
-        onGenerateRoute: (routeSettings) {
-          return MaterialPageRoute(
-              builder: (context) => routeBuilders[routeName!]!(context));
-        });
+      key: navigatorKey,
+      initialRoute: '/',
+      onGenerateRoute: (routeSettings) {
+        return MaterialPageRoute(
+          builder: (context) => routeBuilders[routeName!]!(context),
+        );
+      },
+    );
   }
 
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context) {

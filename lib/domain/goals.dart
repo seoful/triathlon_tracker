@@ -1,7 +1,6 @@
 // ignore_for_file: invalid_annotation_target
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
-import 'package:triathlon_tracker/core/s.dart';
 
 part 'goals.freezed.dart';
 part 'goals.g.dart';

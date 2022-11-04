@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'landing_screen.dart';
+import 'package:triathlon_tracker/presentation/landing_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   final String name;

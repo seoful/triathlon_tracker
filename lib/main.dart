@@ -20,7 +20,8 @@ void main() {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
       await Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform);
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
       final container = ProviderContainer();
       await initHive(container);
       container.read(personalInfoManagerProvider).init();

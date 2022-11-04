@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'custom_text_form.dart';
+import 'package:triathlon_tracker/presentation/onboarding/custom_text_form.dart';
 
 class NameScreen extends StatelessWidget {
   final TextEditingController nameController;
