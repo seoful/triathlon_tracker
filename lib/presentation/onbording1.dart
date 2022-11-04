@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:untitled3/onbord.dart';
+import 'package:triathlon_tracker/presentation/onbording2.dart';
 
 
 void main() => runApp(const MyApp());

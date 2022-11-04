@@ -1,28 +1,22 @@
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:riverpod/riverpod.dart';
-import 'package:triathlon_tracker/data/local_storage_constants.dart';
 import 'package:triathlon_tracker/domain/training.dart';
 
 class TrainingsLocalStorage {
-  late Box<List<Training>> box;
+  Map<TrainingType, Box<Training>> boxes = {};
 
   Future<void> init() async {
-    box = await Hive.openBox(LocalStorageConstants.trainingsBox);
-    if (box.isEmpty) {
-      for (var element in TrainingType.values) {
-        await box.put(element, <Training>[]);
-      }
+    for (var element in TrainingType.values) {
+      boxes[element] = await Hive.openBox<Training>(element.toString());
     }
   }
 
   Future<void> addTraining(TrainingType trainingType, Training training) async {
-    final trainings = box.get(trainingType)!;
-    trainings.add(training);
-    box.put(trainingType, trainings);
+    boxes[trainingType]!.add(training);
   }
 
   List<Training> getTrainings(TrainingType trainingType) {
-    return box.get(trainingType)!;
+    return boxes[trainingType]!.values.toList();
   }
 }
 

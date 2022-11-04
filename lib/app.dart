@@ -10,7 +10,7 @@ class App extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    StaticS.init(context);
+    // StaticS.init(context);
 
     final themeColor = ref.watch(styleProvider).themeColor;
     final colors = ref.watch(styleProvider).colors;
