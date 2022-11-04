@@ -23,3 +23,8 @@ class PersonalInfoNotifier extends StateNotifier<PersonalInfoState> {
     state = PersonalInfoState.empty();
   }
 }
+
+final profileInfoStateNotifierProvider =
+    StateNotifierProvider<PersonalInfoNotifier, PersonalInfoState>((ref) {
+  return PersonalInfoNotifier();
+});
