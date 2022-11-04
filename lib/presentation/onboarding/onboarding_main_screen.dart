@@ -1,11 +1,10 @@
-import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../landing_screen.dart';
-import 'custom_button.dart';
-import 'custom_progress_bar.dart';
-import 'name_screen.dart';
-import 'options_screen.dart';
+import 'package:triathlon_tracker/presentation/landing_screen.dart';
+import 'package:triathlon_tracker/presentation/onboarding/custom_button.dart';
+import 'package:triathlon_tracker/presentation/onboarding/custom_progress_bar.dart';
+import 'package:triathlon_tracker/presentation/onboarding/name_screen.dart';
+import 'package:triathlon_tracker/presentation/onboarding/options_screen.dart';
 
 class OnBoardingMainScreen extends StatefulWidget {
   const OnBoardingMainScreen({Key? key}) : super(key: key);
@@ -23,7 +22,7 @@ class _OnBoardingMainScreenState extends State<OnBoardingMainScreen> {
     OptionsScreen(
       onChanged: (List<int>? value) {
         if (value != null) {
-          _chosenOption = value!;
+          _chosenOption = value;
         }
       },
     ),
