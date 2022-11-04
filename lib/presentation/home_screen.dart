@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:triathlon_tracker/presentation/landing_screen.dart';
+import 'landing_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final String name;
+  final List<int> totals;
+  const HomeScreen({
+    super.key,
+    required this.name,
+    required this.totals,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,16 +31,22 @@ class HomeScreen extends StatelessWidget {
           horizontal: 16,
         ),
         child: Column(
-          children: const [
-            SizedBox(height: 20),
-            HeaderBar(),
-            SizedBox(height: 48),
-            SwimmingIndicator(),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 30),
-              child: CyclingIndicator(),
+          children: [
+            const SizedBox(height: 20),
+            HeaderBar(name: name),
+            const SizedBox(height: 48),
+            SwimmingIndicator(
+              total: totals[0],
             ),
-            RunningIndicator(),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 30),
+              child: CyclingIndicator(
+                total: totals[1],
+              ),
+            ),
+            RunningIndicator(
+              total: totals[2],
+            ),
           ],
         ),
       ),
@@ -43,16 +55,20 @@ class HomeScreen extends StatelessWidget {
 }
 
 class HeaderBar extends StatelessWidget {
-  const HeaderBar({super.key});
+  final String name;
+  const HeaderBar({
+    super.key,
+    required this.name,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Welcome, Lee!',
-          style: TextStyle(
+        Text(
+          'Welcome, ${name.isNotEmpty ? name : 'Lee'}!',
+          style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: Color(0xFF40445C),
@@ -110,7 +126,11 @@ class GoalIndicator extends StatelessWidget {
 }
 
 class SwimmingIndicator extends StatefulWidget {
-  const SwimmingIndicator({super.key});
+  final int total;
+  const SwimmingIndicator({
+    super.key,
+    required this.total,
+  });
 
   @override
   State<SwimmingIndicator> createState() => _SwimmingIndicatorState();
@@ -118,7 +138,7 @@ class SwimmingIndicator extends StatefulWidget {
 
 class _SwimmingIndicatorState extends State<SwimmingIndicator> {
   int _currentProgress = 0;
-  final int _total = 300;
+  late final int _total = widget.total;
 
   @override
   Widget build(BuildContext context) {
@@ -195,7 +215,11 @@ class _SwimmingIndicatorState extends State<SwimmingIndicator> {
 }
 
 class CyclingIndicator extends StatefulWidget {
-  const CyclingIndicator({super.key});
+  final int total;
+  const CyclingIndicator({
+    super.key,
+    required this.total,
+  });
 
   @override
   State<CyclingIndicator> createState() => _CyclingIndicatorState();
@@ -203,7 +227,7 @@ class CyclingIndicator extends StatefulWidget {
 
 class _CyclingIndicatorState extends State<CyclingIndicator> {
   int _currentProgress = 0;
-  final int _total = 300;
+  late final int _total = widget.total;
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +304,11 @@ class _CyclingIndicatorState extends State<CyclingIndicator> {
 }
 
 class RunningIndicator extends StatefulWidget {
-  const RunningIndicator({super.key});
+  final int total;
+  const RunningIndicator({
+    super.key,
+    required this.total,
+  });
 
   @override
   State<RunningIndicator> createState() => _RunningIndicatorState();
@@ -288,7 +316,7 @@ class RunningIndicator extends StatefulWidget {
 
 class _RunningIndicatorState extends State<RunningIndicator> {
   int _currentProgress = 0;
-  final int _total = 300;
+  late final int _total = widget.total;
 
   @override
   Widget build(BuildContext context) {

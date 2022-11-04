@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:triathlon_tracker/presentation/home_screen.dart';
-import 'package:triathlon_tracker/presentation/statistics_screen.dart';
+import 'home_screen.dart';
+import 'statistics_screen.dart';
 
 BuildContext? globalContext;
 
 class LandingScreen extends StatefulWidget {
   static const kHomeScreen = '/home_screen';
   static const kStatisticsScreen = '/statistics_screen';
-
-  const LandingScreen({Key? key}) : super(key: key);
+  final List<int> totals;
+  final String name;
+  const LandingScreen({
+    Key? key,
+    required this.totals,
+    required this.name,
+  }) : super(key: key);
 
   @override
   State<LandingScreen> createState() => _LandingScreenState();
@@ -100,6 +105,8 @@ class _LandingScreenState extends State<LandingScreen> {
       child: TabNavigator(
         navigatorKey: navigatorKeys[index],
         routeName: routeNames[index],
+        totals: widget.totals,
+        name: widget.name,
       ),
     );
   }
@@ -108,28 +115,35 @@ class _LandingScreenState extends State<LandingScreen> {
 class TabNavigator extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
   final String? routeName;
-
-  const TabNavigator({Key? key, this.navigatorKey, this.routeName})
-      : super(key: key);
+  final List<int> totals;
+  final String name;
+  const TabNavigator({
+    Key? key,
+    required this.totals,
+    required this.name,
+    this.navigatorKey,
+    this.routeName,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var routeBuilders = _routeBuilders(context);
 
     return Navigator(
-      key: navigatorKey,
-      initialRoute: '/',
-      onGenerateRoute: (routeSettings) {
-        return MaterialPageRoute(
-          builder: (context) => routeBuilders[routeName!]!(context),
-        );
-      },
-    );
+        key: navigatorKey,
+        initialRoute: '/',
+        onGenerateRoute: (routeSettings) {
+          return MaterialPageRoute(
+              builder: (context) => routeBuilders[routeName!]!(context));
+        });
   }
 
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context) {
     return {
-      LandingScreen.kHomeScreen: (context) => const HomeScreen(),
+      LandingScreen.kHomeScreen: (context) => HomeScreen(
+            totals: totals,
+            name: name,
+          ),
       LandingScreen.kStatisticsScreen: (context) => const StatisticsScreen(),
     };
   }

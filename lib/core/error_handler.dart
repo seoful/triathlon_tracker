@@ -11,11 +11,13 @@ class ErrorHandler {
   }
 
   static void recordError(Object error, StackTrace stackTrace) {
+    print(error);
     logger.severe(
       error.toString(),
       error,
       stackTrace,
     );
+
     FirebaseCrashlytics.instance.recordError(error, stackTrace, fatal: true);
   }
 

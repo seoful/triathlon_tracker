@@ -13,12 +13,12 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     // StaticS.init(context);
 
-    // final themeColor = ref.watch(styleProvider).themeColor;
-    // final colors = ref.watch(styleProvider).colors;
-    // final locale = ref.watch(localeProvider);
+    final themeColor = ref.watch(styleProvider).themeColor;
+    final colors = ref.watch(styleProvider).colors;
+    final locale = ref.watch(localeProvider);
 
     return MaterialApp(
-      // theme: AppTheme.theme(themeColor, colors),
+      theme: AppTheme.theme(themeColor, colors),
       localizationsDelegates: [
         S.delegate,
         GlobalMaterialLocalizations.delegate,
@@ -26,7 +26,7 @@ class App extends ConsumerWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.supportedLocales,
-      // locale: locale,
+      locale: locale,
       home: const OnBoardingMainScreen(),
     );
   }
