@@ -11,6 +11,7 @@ import 'package:triathlon_tracker/data/trainings_local_storage.dart';
 import 'package:triathlon_tracker/domain/goals.dart';
 import 'package:triathlon_tracker/domain/profile.dart';
 import 'package:triathlon_tracker/domain/training.dart';
+import 'package:triathlon_tracker/firebase_options.dart';
 import 'package:triathlon_tracker/managers/personal_info_manager.dart';
 import 'package:triathlon_tracker/managers/trainings.manager.dart';
 
@@ -18,7 +19,8 @@ void main() {
   runZonedGuarded(
     () async {
       WidgetsFlutterBinding.ensureInitialized();
-      await Firebase.initializeApp();
+      await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform);
       final container = ProviderContainer();
       await initHive(container);
       container.read(personalInfoManagerProvider).init();

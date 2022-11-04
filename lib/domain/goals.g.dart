@@ -8,7 +8,7 @@ part of 'goals.dart';
 
 class GoalsAdapter extends TypeAdapter<_$_Goals> {
   @override
-  final int typeId = 1;
+  final int typeId = 0;
 
   @override
   _$_Goals read(BinaryReader reader) {

@@ -135,7 +135,7 @@ class __$$_GoalsCopyWithImpl<$Res> extends _$GoalsCopyWithImpl<$Res, _$_Goals>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 1)
+@HiveType(typeId: 0)
 class _$_Goals implements _Goals {
   _$_Goals(
       {@HiveField(0) this.name,
