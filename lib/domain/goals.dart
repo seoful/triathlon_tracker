@@ -1,12 +1,14 @@
 // ignore_for_file: invalid_annotation_target
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
+import 'package:triathlon_tracker/domain/training.dart';
 
 part 'goals.freezed.dart';
 part 'goals.g.dart';
 
 @freezed
 class Goals with _$Goals {
+  const Goals._();
   @HiveType(typeId: 0)
   factory Goals({
     @HiveField(0) String? name,
@@ -16,6 +18,17 @@ class Goals with _$Goals {
   }) = _Goals;
 
   factory Goals.fromJson(Map<String, dynamic> json) => _$GoalsFromJson(json);
+
+  double byTrainingtype(TrainingType type) {
+    switch (type) {
+      case TrainingType.swimming:
+        return swimming;
+      case TrainingType.cycling:
+        return cycling;
+      case TrainingType.running:
+        return running;
+    }
+  }
 
   // factory Goals.sprint() => Goals(
   //       name: StaticS.loc.sprint,

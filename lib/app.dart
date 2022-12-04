@@ -4,7 +4,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:triathlon_tracker/core/app_theme.dart';
 import 'package:triathlon_tracker/core/s.dart';
 import 'package:triathlon_tracker/core/style.dart';
+import 'package:triathlon_tracker/presentation/landing_screen.dart';
 import 'package:triathlon_tracker/presentation/onboarding/onboarding_main_screen.dart';
+import 'package:triathlon_tracker/state_holders/personal_info_state_holder/personal_info_state.dart';
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -16,6 +18,10 @@ class App extends ConsumerWidget {
     final themeColor = ref.watch(styleProvider).themeColor;
     final colors = ref.watch(styleProvider).colors;
     final locale = ref.watch(localeProvider);
+    final isLogged = ref.read(personalInfoStateNotifierProvider).when(
+          empty: () => false,
+          data: (goals, profile) => true,
+        );
 
     return MaterialApp(
       theme: AppTheme.theme(themeColor, colors),
@@ -27,7 +33,7 @@ class App extends ConsumerWidget {
       ],
       supportedLocales: S.supportedLocales,
       locale: locale,
-      home: const OnBoardingMainScreen(),
+      home: isLogged ? const LandingScreen() : const OnBoardingMainScreen(),
     );
   }
 }

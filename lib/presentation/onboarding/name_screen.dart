@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:triathlon_tracker/core/s.dart';
 import 'package:triathlon_tracker/presentation/onboarding/custom_text_form.dart';
 
 class NameScreen extends StatelessWidget {
@@ -16,19 +17,19 @@ class NameScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 36),
-          const Text(
-            "We are glad you joined us! Let's get acquainted",
-            style: TextStyle(
+          Text(
+            S.of(context).greetings,
+            style: const TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w400,
               color: Color(0xFF9EA1B2),
             ),
           ),
-          const Padding(
-            padding: EdgeInsets.only(top: 24, bottom: 36),
+          Padding(
+            padding: const EdgeInsets.only(top: 24, bottom: 36),
             child: Text(
-              'Your name is',
-              style: TextStyle(
+             S.of(context).your_name_is,
+              style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w700,
                 color: Color(0xFF40445C),
@@ -37,7 +38,7 @@ class NameScreen extends StatelessWidget {
           ),
           CustomTextForm(
             controller: nameController,
-            hintText: 'enter your name here',
+            hintText: S.of(context).enter_your_name,
           ),
           const Spacer(),
         ],

@@ -124,14 +124,15 @@ class __$$_TrainingsStateCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_TrainingsState implements _TrainingsState {
+class _$_TrainingsState extends _TrainingsState {
   _$_TrainingsState(
       {required final List<Training> swimming,
       required final List<Training> cycling,
       required final List<Training> running})
       : _swimming = swimming,
         _cycling = cycling,
-        _running = running;
+        _running = running,
+        super._();
 
   factory _$_TrainingsState.fromJson(Map<String, dynamic> json) =>
       _$$_TrainingsStateFromJson(json);
@@ -194,11 +195,12 @@ class _$_TrainingsState implements _TrainingsState {
   }
 }
 
-abstract class _TrainingsState implements TrainingsState {
+abstract class _TrainingsState extends TrainingsState {
   factory _TrainingsState(
       {required final List<Training> swimming,
       required final List<Training> cycling,
       required final List<Training> running}) = _$_TrainingsState;
+  _TrainingsState._() : super._();
 
   factory _TrainingsState.fromJson(Map<String, dynamic> json) =
       _$_TrainingsState.fromJson;
