@@ -107,7 +107,7 @@ class __$$_TrainingCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-@HiveType(typeId: 5)
+@HiveType(typeId: 1)
 class _$_Training implements _Training {
   _$_Training(
       {@HiveField(0) required this.distance,

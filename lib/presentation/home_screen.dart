@@ -1,19 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:triathlon_tracker/core/s.dart';
+import 'package:triathlon_tracker/domain/goals.dart';
+import 'package:triathlon_tracker/domain/training.dart';
+import 'package:triathlon_tracker/managers/trainings.manager.dart';
 import 'package:triathlon_tracker/presentation/landing_screen.dart';
+import 'package:triathlon_tracker/state_holders/personal_info_state_holder/personal_info_state.dart';
+import 'package:triathlon_tracker/state_holders/trainings_state_holder/trainings_notifier.dart';
 
-class HomeScreen extends StatelessWidget {
-  final String name;
-  final List<int> totals;
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({
     super.key,
-    required this.name,
-    required this.totals,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final name = ref.watch(personalInfoStateNotifierProvider).maybeMap(
+          orElse: () => "Lee",
+          data: (value) => value.profile.name,
+        );
+    final goals = ref.watch(personalInfoStateNotifierProvider).maybeMap(
+          orElse: () => Goals(swimming: 0, cycling: 0, running: 0),
+          data: (value) => value.goals,
+        );
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -35,17 +46,17 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 20),
             HeaderBar(name: name),
             const SizedBox(height: 48),
-            SwimmingIndicator(
-              total: totals[0],
+            const TrainingsIndicator(
+              sportType: TrainingType.swimming,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 30),
-              child: CyclingIndicator(
-                total: totals[1],
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 30),
+              child: TrainingsIndicator(
+                sportType: TrainingType.running,
               ),
             ),
-            RunningIndicator(
-              total: totals[2],
+            const TrainingsIndicator(
+              sportType: TrainingType.cycling,
             ),
           ],
         ),
@@ -67,7 +78,7 @@ class HeaderBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Welcome, ${name.isNotEmpty ? name : 'Lee'}!',
+          '${S.of(context).welcome}, $name',
           style: const TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.w600,
@@ -125,34 +136,39 @@ class GoalIndicator extends StatelessWidget {
   }
 }
 
-class SwimmingIndicator extends StatefulWidget {
-  final int total;
-  const SwimmingIndicator({
+class TrainingsIndicator extends ConsumerWidget {
+  final TrainingType sportType;
+  const TrainingsIndicator({
     super.key,
-    required this.total,
+    required this.sportType,
   });
 
   @override
-  State<SwimmingIndicator> createState() => _SwimmingIndicatorState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final currentProgress = ref
+        .watch(trainingsStateNotifierProvider)
+        .byTrainingsType(sportType)
+        .fold(
+          0.0,
+          (previousValue, element) => previousValue += element.distance,
+        );
+    final goal = ref.watch(personalInfoStateNotifierProvider).maybeWhen(
+          orElse: () => 0,
+          data: (goals, profile) => goals.byTrainingtype(sportType),
+        );
 
-class _SwimmingIndicatorState extends State<SwimmingIndicator> {
-  int _currentProgress = 0;
-  late final int _total = widget.total;
-
-  @override
-  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
         showValueWindow(
           context,
-          title: 'Enter your Swimming Training',
-          hintText: '$_currentProgress',
+          title: S.of(context).enter_training,
+          hintText: '$currentProgress',
         ).then((value) {
           if (value != null) {
-            setState(() {
-              _currentProgress = int.parse(value);
-            });
+            ref.read(trainingsManagerProvider).addTraining(
+                sportType,
+                Training(
+                    distance: double.parse(value), dateTime: DateTime.now()));
           }
         });
       },
@@ -167,16 +183,16 @@ class _SwimmingIndicatorState extends State<SwimmingIndicator> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Swimming',
-                      style: TextStyle(
+                    Text(
+                      sportType.getString(context),
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 20,
                         color: Colors.black,
                       ),
                     ),
                     Text(
-                      '$_currentProgress/$_total',
+                      '$currentProgress/$goal',
                       style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         fontSize: 20,
@@ -186,9 +202,9 @@ class _SwimmingIndicatorState extends State<SwimmingIndicator> {
                   ],
                 ),
                 const Spacer(),
-                const Text(
-                  'Log',
-                  style: TextStyle(
+                Text(
+                  S.of(context).log,
+                  style: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
                     color: Color(0xFF4A6680),
@@ -205,185 +221,7 @@ class _SwimmingIndicatorState extends State<SwimmingIndicator> {
             ),
             const SizedBox(height: 11),
             GoalIndicator(
-              progress: _format(_currentProgress / _total),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class CyclingIndicator extends StatefulWidget {
-  final int total;
-  const CyclingIndicator({
-    super.key,
-    required this.total,
-  });
-
-  @override
-  State<CyclingIndicator> createState() => _CyclingIndicatorState();
-}
-
-class _CyclingIndicatorState extends State<CyclingIndicator> {
-  int _currentProgress = 0;
-  late final int _total = widget.total;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showValueWindow(
-          context,
-          title: 'Enter your Cycling Training',
-          hintText: '$_currentProgress',
-        ).then((value) {
-          if (value != null) {
-            setState(() {
-              _currentProgress = int.parse(value);
-            });
-          }
-        });
-      },
-      child: Container(
-        color: Colors.transparent,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Cycling',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      '$_currentProgress/$_total',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                const Text(
-                  'Log',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF4A6680),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                const Icon(
-                  Icons.add_rounded,
-                  color: Color(0xFF4A6680),
-                  size: 18,
-                ),
-                const SizedBox(width: 4),
-              ],
-            ),
-            const SizedBox(height: 11),
-            GoalIndicator(
-              progress: _format(_currentProgress / _total),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class RunningIndicator extends StatefulWidget {
-  final int total;
-  const RunningIndicator({
-    super.key,
-    required this.total,
-  });
-
-  @override
-  State<RunningIndicator> createState() => _RunningIndicatorState();
-}
-
-class _RunningIndicatorState extends State<RunningIndicator> {
-  int _currentProgress = 0;
-  late final int _total = widget.total;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        showValueWindow(
-          context,
-          title: 'Enter your Running Training',
-          hintText: '$_currentProgress',
-        ).then((value) {
-          if (value != null) {
-            setState(() {
-              _currentProgress = int.parse(value);
-            });
-          }
-        });
-      },
-      child: Container(
-        color: Colors.transparent,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Running',
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                    Text(
-                      '$_currentProgress/$_total',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                const Text(
-                  'Log',
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF4A6680),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                const Icon(
-                  Icons.add_rounded,
-                  color: Color(0xFF4A6680),
-                  size: 18,
-                ),
-                const SizedBox(width: 4),
-              ],
-            ),
-            const SizedBox(height: 11),
-            GoalIndicator(
-              progress: _format(_currentProgress / _total),
+              progress: _format(currentProgress / goal),
             )
           ],
         ),
@@ -467,7 +305,7 @@ Future<String?> showValueWindow(
                     horizontal: 14,
                     vertical: 10,
                   ),
-                  hintText: '$hintText km',
+                  hintText: '$hintText ${S.of(context).km}',
                   hintStyle: const TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w400,
@@ -528,10 +366,10 @@ class AppButton extends StatelessWidget {
           borderRadius: BorderRadius.all(Radius.circular(15)),
         ),
         padding: const EdgeInsets.symmetric(vertical: 12),
-        child: const Center(
+        child: Center(
           child: Text(
-            'Save',
-            style: TextStyle(
+            S.of(context).save,
+            style: const TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w600,
               color: Colors.white,

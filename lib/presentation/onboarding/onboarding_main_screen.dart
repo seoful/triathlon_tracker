@@ -1,5 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:triathlon_tracker/core/s.dart';
+import 'package:triathlon_tracker/domain/goals.dart';
+import 'package:triathlon_tracker/domain/profile.dart';
+import 'package:triathlon_tracker/managers/personal_info_manager.dart';
 import 'package:triathlon_tracker/presentation/landing_screen.dart';
 import 'package:triathlon_tracker/presentation/onboarding/custom_button.dart';
 import 'package:triathlon_tracker/presentation/onboarding/custom_progress_bar.dart';
@@ -154,22 +159,38 @@ class _OnBoardingMainScreenState extends State<OnBoardingMainScreen> {
                                   horizontal: 20,
                                   vertical: 20,
                                 ),
-                                child: CustomButton(
-                                  title: 'Continue',
-                                  onPressed: () async {
-                                    if (_currentIndex == _totalScreens - 1) {
-                                      Navigator.of(context).push(
-                                        CupertinoPageRoute(
-                                          builder: (context) => LandingScreen(
-                                            name: _nameController.text,
-                                            totals: _chosenOption,
+                                child: Consumer(
+                                  builder: (context, ref, child) =>
+                                      CustomButton(
+                                    title: S.of(context).continue_,
+                                    onPressed: () async {
+                                      ref
+                                          .read(personalInfoManagerProvider)
+                                          .setNewPersonalData(
+                                            profile: Profile(
+                                              name: _nameController.text,
+                                            ),
+                                            goals: Goals(
+                                              swimming:
+                                                  _chosenOption[0].toDouble(),
+                                              cycling:
+                                                  _chosenOption[1].toDouble(),
+                                              running:
+                                                  _chosenOption[2].toDouble(),
+                                            ),
+                                          );
+                                      if (_currentIndex == _totalScreens - 1) {
+                                        Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                            builder: (context) =>
+                                                const LandingScreen(),
                                           ),
-                                        ),
-                                      );
-                                    } else {
-                                      _moveForward();
-                                    }
-                                  },
+                                        );
+                                      } else {
+                                        _moveForward();
+                                      }
+                                    },
+                                  ),
                                 ),
                               ),
                             )

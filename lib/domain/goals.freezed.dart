@@ -136,12 +136,13 @@ class __$$_GoalsCopyWithImpl<$Res> extends _$GoalsCopyWithImpl<$Res, _$_Goals>
 /// @nodoc
 @JsonSerializable()
 @HiveType(typeId: 0)
-class _$_Goals implements _Goals {
+class _$_Goals extends _Goals {
   _$_Goals(
       {@HiveField(0) this.name,
       @HiveField(1) required this.swimming,
       @HiveField(2) required this.cycling,
-      @HiveField(3) required this.running});
+      @HiveField(3) required this.running})
+      : super._();
 
   factory _$_Goals.fromJson(Map<String, dynamic> json) =>
       _$$_GoalsFromJson(json);
@@ -195,12 +196,13 @@ class _$_Goals implements _Goals {
   }
 }
 
-abstract class _Goals implements Goals {
+abstract class _Goals extends Goals {
   factory _Goals(
       {@HiveField(0) final String? name,
       @HiveField(1) required final double swimming,
       @HiveField(2) required final double cycling,
       @HiveField(3) required final double running}) = _$_Goals;
+  _Goals._() : super._();
 
   factory _Goals.fromJson(Map<String, dynamic> json) = _$_Goals.fromJson;
 

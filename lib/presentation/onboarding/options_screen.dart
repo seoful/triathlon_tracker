@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:triathlon_tracker/core/s.dart';
 
 class OptionsScreen extends StatefulWidget {
   final ValueChanged<List<int>?> onChanged;
@@ -13,11 +14,11 @@ class OptionsScreen extends StatefulWidget {
 }
 
 class _OptionsScreenState extends State<OptionsScreen> {
-  final List<String> _options = const [
-    'Sprint (0.75/20/5km)',
-    'Olympic (1.5/40/10km)',
-    'O2 (3/80/20km)',
-    'half ironman (1.9/90/21.0975km)',
+  late final List<String> _options = [
+    '${S.of(context).sprint} (0.75/20/5 ${S.of(context).km})',
+    '${S.of(context).olympic} (1.5/40/10 ${S.of(context).km})',
+    '${S.of(context).o2} (3/80/20 ${S.of(context).km})',
+    '${S.of(context).half_ironman} (1.9/90/21.0975 ${S.of(context).km})',
   ];
 
   @override
@@ -26,11 +27,11 @@ class _OptionsScreenState extends State<OptionsScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const SizedBox(height: 44),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Text(
-            'Which distance do you preparing to?',
-            style: TextStyle(
+            S.of(context).distance_question,
+            style: const TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.w700,
               color: Color(0xFF40445C),
@@ -43,9 +44,9 @@ class _OptionsScreenState extends State<OptionsScreen> {
           ).copyWith(
             top: 24,
           ),
-          child: const Text(
-            'We need this to provide you the goals that you need to achive to be prepared for the distance. You can change it later in Settings',
-            style: TextStyle(
+          child: Text(
+            S.of(context).distance_explanation,
+            style: const TextStyle(
               fontSize: 17,
               fontWeight: FontWeight.w400,
               color: Color(0xFF9EA1B2),
@@ -287,12 +288,14 @@ class _OptionsState extends State<Options> with TickerProviderStateMixin {
                         buildRadioItem(isChosen: isChosen)
                       ],
                       const SizedBox(width: 12),
-                      Text(
-                        title,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF40445C),
+                      Flexible(
+                        child: Text(
+                          title,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF40445C),
+                          ),
                         ),
                       ),
                     ],

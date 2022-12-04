@@ -8,12 +8,8 @@ BuildContext? globalContext;
 class LandingScreen extends StatefulWidget {
   static const kHomeScreen = '/home_screen';
   static const kStatisticsScreen = '/statistics_screen';
-  final List<int> totals;
-  final String name;
   const LandingScreen({
     Key? key,
-    required this.totals,
-    required this.name,
   }) : super(key: key);
 
   @override
@@ -105,8 +101,6 @@ class _LandingScreenState extends State<LandingScreen> {
       child: TabNavigator(
         navigatorKey: navigatorKeys[index],
         routeName: routeNames[index],
-        totals: widget.totals,
-        name: widget.name,
       ),
     );
   }
@@ -115,12 +109,8 @@ class _LandingScreenState extends State<LandingScreen> {
 class TabNavigator extends StatelessWidget {
   final GlobalKey<NavigatorState>? navigatorKey;
   final String? routeName;
-  final List<int> totals;
-  final String name;
   const TabNavigator({
     Key? key,
-    required this.totals,
-    required this.name,
     this.navigatorKey,
     this.routeName,
   }) : super(key: key);
@@ -142,10 +132,7 @@ class TabNavigator extends StatelessWidget {
 
   Map<String, WidgetBuilder> _routeBuilders(BuildContext context) {
     return {
-      LandingScreen.kHomeScreen: (context) => HomeScreen(
-            totals: totals,
-            name: name,
-          ),
+      LandingScreen.kHomeScreen: (context) => const HomeScreen(),
       LandingScreen.kStatisticsScreen: (context) => const StatisticsScreen(),
     };
   }

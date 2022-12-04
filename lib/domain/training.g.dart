@@ -52,7 +52,7 @@ class TrainingTypeAdapter extends TypeAdapter<TrainingType> {
 
 class TrainingAdapter extends TypeAdapter<_$_Training> {
   @override
-  final int typeId = 5;
+  final int typeId = 1;
 
   @override
   _$_Training read(BinaryReader reader) {
