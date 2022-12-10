@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:triathlon_tracker/core/s.dart';
-import 'package:triathlon_tracker/domain/goals.dart';
 import 'package:triathlon_tracker/domain/training.dart';
 import 'package:triathlon_tracker/managers/trainings.manager.dart';
 import 'package:triathlon_tracker/presentation/landing_screen.dart';
@@ -20,10 +19,6 @@ class HomeScreen extends ConsumerWidget {
     final name = ref.watch(personalInfoStateNotifierProvider).maybeMap(
           orElse: () => "Lee",
           data: (value) => value.profile.name,
-        );
-    final goals = ref.watch(personalInfoStateNotifierProvider).maybeMap(
-          orElse: () => Goals(swimming: 0, cycling: 0, running: 0),
-          data: (value) => value.goals,
         );
     return Scaffold(
       appBar: AppBar(
@@ -166,9 +161,12 @@ class TrainingsIndicator extends ConsumerWidget {
         ).then((value) {
           if (value != null) {
             ref.read(trainingsManagerProvider).addTraining(
-                sportType,
-                Training(
-                    distance: double.parse(value), dateTime: DateTime.now()));
+                  sportType,
+                  Training(
+                    distance: double.parse(value),
+                    dateTime: DateTime.now(),
+                  ),
+                );
           }
         });
       },

@@ -6,19 +6,6 @@ The idea of Triathlon Tracker app is to help people to get ready for triathlon d
 
 The list of screens in the app: onboarding screens, main screen, three similar screens to fill training information, settings screen, statistic screen
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
 # Code Requirements
 
 - [x] Networking (Firebase, Crashlytics)
@@ -40,4 +27,4 @@ samples, guidance on mobile development, and a full API reference.
 
 # APK Link
 
-[APK Link](https://drive.google.com/file/d/1PLXeZCBQ6uiOvoB0TAF8xEozSfgPIf5H/view)
+[APK Link](https://drive.google.com/file/d/1kxoy3S77wezeK0uByaluOtRrBxCILBar/view?usp=sharing)
